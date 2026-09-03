@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Header from "./src/Components/header.jsx";
 import Nav from "./src/Components/nav.jsx";
 import Splash from "./src/Components/splash.jsx";
+import Home from "./src/Components/home.jsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 function APP(){
     return(
@@ -15,6 +16,7 @@ function APP(){
                     <div className="row">
                         <Header />
                         <Nav />
+                        <Home />
                     </div>
                 } />
             </Routes>

@@ -1,0 +1,9 @@
+:root{
+    --baseColor:#CB162B;
+    --secBColor:#1B294E;
+    --thrdBColor:#FFD21D;
+}
+
+.homeSection{
+    padding: 1rem;
+}

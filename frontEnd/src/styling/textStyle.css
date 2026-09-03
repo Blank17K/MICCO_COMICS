@@ -88,4 +88,10 @@ input:focus{
 
 .section{
     border: solid 5px black;
+    background-color: grey;
+    padding: 1rem 0;
+}
+.active{
+    background-color: var(--baseColor);
+    box-shadow: 5px 5px var(--thrdBColor);
 }
