@@ -1,0 +1,39 @@
+{
+  "name": "micco_comics",
+  "version": "1.0.0",
+  "description": "This is a photosharing app for all your favourite scifi comics, shows and movies.",
+  "homepage": "https://github.com/Blank17K/MICCO_COMICS#readme",
+  "bugs": {
+    "url": "https://github.com/Blank17K/MICCO_COMICS/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Blank17K/MICCO_COMICS.git"
+  },
+  "license": "ISC",
+  "author": "Boikanyo_Tshwale",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack && babel server.js -d dist",
+    "start": "npm run build && node server.js"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "express": "^5.2.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@babel/cli": "^8.0.4",
+    "@babel/core": "^8.0.1",
+    "@babel/preset-env": "^8.0.2",
+    "@babel/preset-react": "^8.0.1",
+    "babel-loader": "^10.1.1",
+    "css-loader": "^7.1.5",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.110.3",
+    "webpack-cli": "^7.2.3"
+  }
+}
