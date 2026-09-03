@@ -5,13 +5,15 @@
 }
 .spots{
     width: 100vw;
+    position: relative;
     height: 100vh;
     background: white;
-    background-image: radial-gradient(black 1.5px, transparent 0);
+    overflow: hidden;
+    background-image: radial-gradient(black 2px, transparent 0);
     background-size: 15px 15px;
     background-position: 100% 100%;
-    animation: slider 10s linear infinite;
-
+    animation: slider 15s linear infinite;
+    overflow: hidden;
 }
 .spots::before{
     content: "";
@@ -28,13 +30,13 @@
 .spots::after{
     content: "";
     position: absolute;
-    bottom:-100%;
-    right:-45%;
+    bottom:-70%;
+    right:-60%;
     z-index: 3;
     width: 50vw;
     height: 75vw;
     transform-origin: center;
-    transform: translateX(-50%) rotate(45deg);
+    transform: translateX(-75%) rotate(45deg);
     background-color: var(--secBColor);
 }
 @keyframes slider {
