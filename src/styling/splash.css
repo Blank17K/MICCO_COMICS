@@ -1,0 +1,53 @@
+:root{
+    --baseColor:#CB162B;
+    --secBColor:#1B294E;
+    --thrdBColor:#FFD21D;
+}
+.spots{
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    background-image: radial-gradient(black 1.5px, transparent 0);
+    background-size: 15px 15px;
+    background-position: 100% 100%;
+    animation: slider 10s linear infinite;
+
+}
+.spots::before{
+    content: "";
+    position: absolute;
+    top:-60%;
+    left:-0%;
+    z-index: 3;
+    width: 50vw;
+    height: 75vw;
+    transform-origin: center;
+    transform: translateX(-50%) rotate(45deg);
+    background-color: var(--secBColor);
+}
+.spots::after{
+    content: "";
+    position: absolute;
+    bottom:-100%;
+    right:-45%;
+    z-index: 3;
+    width: 50vw;
+    height: 75vw;
+    transform-origin: center;
+    transform: translateX(-50%) rotate(45deg);
+    background-color: var(--secBColor);
+}
+@keyframes slider {
+    0% { background-position: 0px 0px; }
+    100% { background-position: 100% 100%; }
+}
+
+.mainH{
+    font-size: 8rem !important;
+    color: var(--baseColor);
+    width: fit-content;
+    text-shadow: 10px 10px var(--secBColor);
+}
+.splash{
+    width: fit-content;
+}

@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Grandstander:wght@100..900&family=Delius&family=Gloria+Hallelujah&display=swap');
+
+:root {
+    --titles: 'Bangers', cursive;
+    --pharagraphs: 'Grandstander', cursive;
+    --messages: 'Delius', cursive;
+    --subtitles: 'Gloria Hallelujah', cursive;
+
+    --baseColor:#CB162B;
+    --secBColor:#1B294E;
+    --thrdBColor:#FFD21D;
+}
+
+.title {
+    font-family: var(--titles);
+    font-size: 5rem;
+}
+.pharagraph {
+    font-family: var(--pharagraphs);
+}
+.message {
+    font-family: var(--messages);
+}
+.subtitle {
+    font-family: var(--subtitles);
+}
+
+.actBox{
+    background-color: var(--thrdBColor);
+    font-family: var(--subtitles);
+    text-align: center;
+    padding: 1rem;
+    border: solid 5px black;
+    width: fit-content;
+}

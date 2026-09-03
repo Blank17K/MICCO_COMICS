@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./Components/header.jsx";
+import Splash from "./Components/splash.jsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 function APP(){
     return(
         <div>
-            <Header/>
+            <Splash/>
         </div>
     );
 }
