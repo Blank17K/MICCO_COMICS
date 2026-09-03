@@ -13,7 +13,8 @@
 
 .title {
     font-family: var(--titles);
-    font-size: 5rem;
+    font-size: 2.5rem;
+    user-select: none;
 }
 .pharagraph {
     font-family: var(--pharagraphs);
@@ -32,4 +33,59 @@
     padding: .5rem  1rem;
     border: solid 5px black;
     width: fit-content;
+}
+.btn_act{
+    border:none;
+    padding: .25rem 1.5rem;
+    font-size: 1.5rem;
+    font-family: var(--titles);
+    background-color: var(--thrdBColor);
+    box-shadow: 5px 5px var(--baseColor);
+    width: fit-content;
+}
+.btn_act:hover{
+    background-color: var(--baseColor);
+    box-shadow: 5px 5px var(--thrdBColor);
+    color: white;
+}
+.userAct{
+    position: absolute;
+    bottom: 13%;
+}
+.closeInteraction{
+    position: absolute;
+    top: 3%;
+    right: 5%;
+    font-size: 2rem;
+    font-family: var(--titles);
+    color: black;
+    cursor: pointer;
+    padding: .25rem 1.5rem;
+    width: fit-content;
+    background-color: lightgrey;
+    box-shadow: 5px 5px black;
+}
+.closeInteraction:hover{
+    background-color: var(--baseColor);
+}
+input{
+    border:none;
+    background-color: white;
+    padding: .5rem 1rem;
+    transform: skewX(-10deg);
+    position: relative;
+}
+input:focus{
+    outline: none;
+    border: solid 2px var(--thrdBColor);
+} 
+
+.closeMenu{
+    visibility: hidden;
+    opacity: 0;
+}
+
+
+.section{
+    border: solid 5px black;
 }

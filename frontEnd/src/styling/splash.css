@@ -3,6 +3,12 @@
     --secBColor:#1B294E;
     --thrdBColor:#FFD21D;
 }
+.signUp_In{
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    z-index: 4;
+}
 .spots{
     width: 100vw;
     position: relative;
@@ -52,4 +58,48 @@
 }
 .splash{
     width: fit-content;
+}
+
+/*___________________________________________________*/
+
+.backDrop{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,.5);
+    backdrop-filter: blur(3px);
+    z-index: 10;
+}
+.formBox h1{
+    position: relative;
+    padding: .5rem 1rem;
+    background-color: white;
+    width:100%;
+    margin-bottom: 1rem;
+}
+.formBox div{
+    padding: 1.5rem;
+}
+.formBox{
+    position: relative;
+    padding: 0;
+    width:30vw;
+    height: 60vh;
+    background-color: lightgray;
+    box-shadow: 10px 10px black;
+}
+.link_chk{
+    position: absolute;
+    cursor: pointer;
+    text-align: center;
+    bottom: 3%;
+}
+.link_chk:hover{
+    text-decoration: underline;
+}
+.text-danger{
+    position: absolute;
+    top: 18%;
+    left: 5%;
+    
 }
