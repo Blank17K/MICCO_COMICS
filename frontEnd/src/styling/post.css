@@ -1,0 +1,39 @@
+.postCards{
+    position: relative;
+    margin: 1rem .75rem;
+    width: 17rem;
+    padding: 0;
+    height: 30rem;
+    font-size: .75rem;
+    border:solid 7px black;
+    overflow: visible;
+}
+.likes{
+    display: block;
+    font-size: 1rem; /* or use a specific size like 2rem, 24px, etc. */
+    text-align: center;
+    cursor: pointer;
+}
+.likes:hover{
+    color: red;
+}
+.likeP{
+    margin: 0;
+}
+.report{
+    text-align: right;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.album_1{
+    top:1.5rem;
+    right: 1.5rem;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: solid 7px black;
+    border-radius: .25rem;
+    background-color: lightgray;
+    z-index: -1;
+
+}

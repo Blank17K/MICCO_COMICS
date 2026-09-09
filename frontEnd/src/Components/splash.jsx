@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import {Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styling/textStyle.css';
 import '../styling/splash.css';
@@ -12,7 +13,8 @@ export default class Splash extends React.Component {
             loginActive: false,
             close:"closeMenu",
             errorMessage:"",
-            closeReg:""
+            closeReg:"",
+            validatedLog: false
         }
         this.userName = React.createRef();
         this.password = React.createRef();
@@ -38,10 +40,12 @@ export default class Splash extends React.Component {
         console.log("Username:", username);
         console.log("Password:", password);
         console.log("Email:", email);
+        this.setState({validatedLog:true});
     }
     login(){
         return(
             <div className={`formBox`}>
+                {this.state.validatedLog == true? <Navigate to={"/home"} replace={true}/>:""}
                 <h1 className="title">LOGIN</h1>
                 <div className="row justify-content-center align-items-center">
                     {this.state.errorMessage == ""? "":<p className="text-danger">{this.state.errorMessage}</p>}

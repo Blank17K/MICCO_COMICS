@@ -9,3 +9,11 @@
     max-height: 85vh;
     overflow-y: scroll;
 }
+.postings{
+    padding: 1.5rem;
+}
+
+.searchBar{
+    margin: 0;
+    padding: .5rem .75rem;
+}
