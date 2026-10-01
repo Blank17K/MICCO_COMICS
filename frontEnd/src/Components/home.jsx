@@ -1,5 +1,5 @@
 import React from "react";
-import {Navigate } from 'react-router-dom';
+import {Link, Navigate } from 'react-router-dom';
 import ReactDOM from "react-dom/client";
 import '../styling/textStyle.css';
 import '../styling/home.css';
@@ -98,7 +98,7 @@ export default class Home extends React.Component {
     }
     displayPhotos() {
         return comicPosts.map((post) => {
-            return <Post data={post} key={post.id} />;
+            return <div className={`col card ${post.isAlbum==true?'album':''} postCards`}><Link to={`/posts/${post.id}`}><Post data={post} key={post.id} /></Link></div>;
         });
     }
 

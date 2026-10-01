@@ -12,9 +12,9 @@ export default class Post extends React.Component {
     }
     
     render(){
-        const album = this.data.isAlbum?"":"album";
+        //const album = this.data.isAlbum?"":"album";
         return(
-            <div className={`col card ${album} postCards`}>
+            <div className={``}>
             {this.data.isAlbum == true?<><div className="album_1"></div><div className="album_2"></div></>:""}
             <img src={placeholder} className="card-img-top" alt="..."/>
             <div className="card-body">
