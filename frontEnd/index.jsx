@@ -6,6 +6,7 @@ import Splash from "./src/Components/splash.jsx";
 import Home from "./src/Components/home.jsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PostViewer from "./src/Components/postViewer.jsx";
+import Profile from "./src/Components/profile.jsx";
 function APP(){
     return(
         <BrowserRouter>
@@ -28,6 +29,14 @@ function APP(){
                         <PostViewer/>
                     </div>
                 }
+                />
+                <Route path="profile" element={
+                    <div className="row eleentBox"> 
+                        <Header/>
+                        <Nav/>
+                        <Profile/>
+                    </div>
+                }    
                 />
             </Routes>
         </BrowserRouter>

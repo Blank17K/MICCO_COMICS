@@ -3,16 +3,59 @@
     --secBColor:#1B294E;
     --thrdBColor:#FFD21D;
     --fourthBColor: #fff;
+    --grey:#5a5a5a;
 }
 .imgCap{
     
 }
+.likeComments{
+    height: 1rem;
+}
+.ImgDescrip{
+    height: 5rem;
+    max-height: 5rem;
+    overflow-y: scroll;
+}
 .imgCapcell{
     aspect-ratio: 3/4;
-    height: 40vw;
+    height: 25rem;
     border-radius: 1rem;
     background-color: var(--fourthBColor);
 }
-.ImgDescrip{
+.comments{
+    background-color: var(--fourthBColor);
+    box-shadow: 5px 5px var(--grey);
+    margin-bottom: 1rem;
+    width: 100%;
+    height: 100%;
+}
+.commentBox{
+    width: 100%;
+    height: 14rem;
+}
+.com{
+    padding-left: 1rem;
+}
+
+.postViwer{
+    height: 35rem;
+}
+.icon_btn {
+    font-size: 2rem;
     
+}
+.icon_btn i{
+    background-color: var(--fourthBColor);
+    width: fit-content;
+    aspect-ratio: 1/1;
+    color: var(--grey);
+    border-radius: 1rem;
+    padding: .5rem;
+}
+.reoprt{
+    text-align: right;
+}
+.postFoot{
+    margin-top: 1rem ;
+    height: 5rem;
 }

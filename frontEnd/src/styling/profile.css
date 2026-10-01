@@ -1,0 +1,33 @@
+:root {
+    --titles: 'Bangers', cursive;
+    --pharagraphs: 'Grandstander', cursive;
+    --messages: 'Delius', cursive;
+    --subtitles: 'Gloria Hallelujah', cursive;
+
+    --baseColor:#CB162B;
+    --secBColor:#1B294E;
+    --thrdBColor:#FFD21D;
+    --grey:#363636;
+    --white:#fff;
+}
+.bioUser{
+    position: relative;
+}
+
+.editP {
+    transform-origin: center;
+    position: absolute;
+    right: .5rem;
+    bottom: -2rem;
+
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--grey);
+    color: var(--white);
+    font-size: 2rem;
+    padding: 1rem; /* careful — padding adds to size unless box-sizing: border-box */
+}
