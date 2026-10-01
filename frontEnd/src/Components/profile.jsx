@@ -31,7 +31,7 @@ const comicPosts = [
 export default function Profile(){
     
     return(
-        <div className="col">
+        <div className="col profileSection">
             <div className="row profileHeader">
                 <div className="col-3">
                     <img alt="profile_picture" src={Ppic} className="profilePic"/>
@@ -47,14 +47,14 @@ export default function Profile(){
                     <h4>Friend Request:</h4>
                     <div className='friendReq'></div>
                 </div>
-                <div className='col'>
-                    <h3>Personal Collection</h3>
+                <div className='col personalSummary'>
+                    <h3 className='section'>Personal Collection</h3>
                     <div className='courcell row'>
                         <Post data={comicPosts[0]}/>
                         <Post data={comicPosts[1]}/>
                         <Post data={comicPosts[2]}/>
                     </div>
-                    <h3>Active Friends</h3>
+                    <h3 className='section mt-3'>Active Friends</h3>
                     <div className='row'>
                     <img alt="profile_picture" src={Ppic} className="profilePic col"/>
                     <img alt="profile_picture" src={Ppic} className="profilePic col"/>
