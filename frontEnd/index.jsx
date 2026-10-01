@@ -5,6 +5,7 @@ import Nav from "./src/Components/nav.jsx";
 import Splash from "./src/Components/splash.jsx";
 import Home from "./src/Components/home.jsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import PostViewer from "./src/Components/postViewer.jsx";
 function APP(){
     return(
         <BrowserRouter>
@@ -12,13 +13,22 @@ function APP(){
                 <Route path="/" element={<Splash />} />
 
                 {/* Needs Validation*/}
-                <Route path="/Home" element={
-                    <div className="row">
+                <Route path="/home" element={
+                    <div className="row elementBox">
                         <Header />
                         <Nav />
                         <Home />
                     </div>
                 } />
+
+                <Route path="posts/:id" element={
+                    <div className="row eleentBox"> 
+                        <Header/>
+                        <Nav/>
+                        <PostViewer/>
+                    </div>
+                }
+                />
             </Routes>
         </BrowserRouter>
     );

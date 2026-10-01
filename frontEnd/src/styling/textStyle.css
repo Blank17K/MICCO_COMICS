@@ -10,7 +10,9 @@
     --secBColor:#1B294E;
     --thrdBColor:#FFD21D;
 }
-
+body{
+    margin: 0 !important;
+}
 .title {
     font-family: var(--titles);
     font-size: 2.5rem;
@@ -88,10 +90,21 @@ input:focus{
 
 .section{
     border: solid 5px black;
+    margin-left:  0;
+    margin-right: 0;
     background-color: grey;
     padding: 1rem 0;
 }
 .active{
     background-color: var(--baseColor);
     box-shadow: 5px 5px var(--thrdBColor);
+}
+.elementBox{
+    margin:0;
+}
+.background{
+    z-index: -1;
+    position: absolute;
+    left: 0;
+    top: 0;
 }

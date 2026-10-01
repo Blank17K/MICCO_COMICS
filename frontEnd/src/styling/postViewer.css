@@ -1,0 +1,18 @@
+:root{
+    --baseColor:#CB162B;
+    --secBColor:#1B294E;
+    --thrdBColor:#FFD21D;
+    --fourthBColor: #fff;
+}
+.imgCap{
+    
+}
+.imgCapcell{
+    aspect-ratio: 3/4;
+    height: 40vw;
+    border-radius: 1rem;
+    background-color: var(--fourthBColor);
+}
+.ImgDescrip{
+    
+}
