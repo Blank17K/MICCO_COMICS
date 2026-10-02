@@ -98,7 +98,11 @@ export default class Home extends React.Component {
     }
     displayPhotos() {
         return comicPosts.map((post) => {
-            return <div className={`col card ${post.isAlbum==true?'album':''} postCards`}><Link to={`/posts/${post.id}`}><Post data={post} key={post.id} /></Link></div>;
+            return <div key={post.id} className={`col card ${post.isAlbum ? 'album' : ''} postCards`}>
+                <Link to={`/posts/${post.id}`}>
+                    <Post data={post} />
+                </Link>
+            </div>
         });
     }
 

@@ -1,6 +1,7 @@
 import Ppic from './imgs/PP.svg'
 import '../styling/profile.css'
 import Post from './post'
+import { Link } from 'react-router-dom'
 
 const comicPosts = [
     {
@@ -39,7 +40,7 @@ export default function Profile(){
                 </div>
                 <div className="section col bioUser">
                     <p className="bio"></p>
-                    <span className='editP'><i class="lni lni-pen-to-square"></i></span>
+                    <span className='editP'><i className="lni lni-pen-to-square"></i></span>
                 </div>
             </div>
             <div className='row'>
@@ -50,9 +51,9 @@ export default function Profile(){
                 <div className='col personalSummary'>
                     <h3 className='section'>Personal Collection</h3>
                     <div className='courcell row'>
-                        <Post data={comicPosts[0]}/>
-                        <Post data={comicPosts[1]}/>
-                        <Post data={comicPosts[2]}/>
+                        <div className={`col card ${comicPosts[1].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[1].id}`}><Post data={comicPosts[1]}/></Link></div>
+                        <div className={`col card ${comicPosts[2].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[2].id}`}><Post data={comicPosts[2]}/></Link></div>
+                        <div className={`col card ${comicPosts[0].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[0].id}`}><Post data={comicPosts[0]}/></Link></div>
                     </div>
                     <h3 className='section mt-3'>Active Friends</h3>
                     <div className='row'>

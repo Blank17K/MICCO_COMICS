@@ -1,0 +1,17 @@
+:root{
+    --baseColor:#CB162B;
+    --secBColor:#1B294E;
+    --thrdBColor:#FFD21D;
+    --fourthBColor: #fff;
+    --grey:#e1e1e1;
+}
+.addPostF{
+    width: 50vw;
+    background-color: var(--grey);
+    box-shadow: 10px 10px black;
+    padding: 2rem;
+}
+
+#floatingTextarea, #floatingInput{
+    width: 100%;
+}
