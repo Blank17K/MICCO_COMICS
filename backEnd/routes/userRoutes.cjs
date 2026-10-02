@@ -1,35 +1,27 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const User = require('../models/User');
-const Post = require('../models/Post');
+const User = require('../models/Userc');
+const Post = require('../models/Post.cjs');
 
 const router = express.Router();
 
-/* REGISTER — POST /api/users/register */
 router.post('/register', async (req, res) => {
   try {
     const { email, username, password } = req.body;
 
-    // basic validation
     if (!email || !username || !password) {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
-    // check uniqueness
     const emailTaken = await User.findOne({ email });
     if (emailTaken) return res.status(400).json({ message: 'Email already in use' });
 
     const usernameTaken = await User.findOne({ username });
     if (usernameTaken) return res.status(400).json({ message: 'Username already taken' });
 
-    // hash password
     const hashed = await bcrypt.hash(password, 10);
 
-    const user = await User.create({
-      email,
-      username,
-      password: hashed
-    });
+    const user = await User.create({ email, username, password: hashed });
 
     res.status(201).json({ message: 'User registered', user });
   } catch (err) {
@@ -37,16 +29,15 @@ router.post('/register', async (req, res) => {
   }
 });
 
-/* LOGIN — POST /api/users/login */
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password required' });
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Username and password required' });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
     if (!user) return res.status(400).json({ message: 'Invalid credentials' });
 
     const match = await bcrypt.compare(password, user.password);
@@ -58,14 +49,21 @@ router.post('/login', async (req, res) => {
   }
 });
 
-/* EDIT PROFILE — PUT /api/users/:id */
+router.get('/check-username/:username', async (req, res) => {
+  try {
+    const exists = await User.findOne({ username: req.params.username });
+    res.json({ available: !exists });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 router.put('/:id', async (req, res) => {
   try {
     const { username, bio, profilePic, password } = req.body;
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    // update username (check availability)
     if (username && username !== user.username) {
       const taken = await User.findOne({ username });
       if (taken) return res.status(400).json({ message: 'Username already taken' });
@@ -86,24 +84,6 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-/* CHECK USERNAME — GET /api/users/check-username/:username */
-router.get('/check-username/:username', async (req, res) => {
-  const exists = await User.findOne({ username: req.params.username });
-  res.json({ available: !exists });
-});
-
-/* GET USER — GET /api/users/:id */
-router.get('/:id', async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id).populate('post_ids');
-    if (!user) return res.status(404).json({ message: 'User not found' });
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-/* APPEND POST TO USER — POST /api/users/:id/posts */
 router.post('/:id/posts', async (req, res) => {
   try {
     const { postId } = req.body;
@@ -120,6 +100,16 @@ router.post('/:id/posts', async (req, res) => {
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     res.json({ message: 'Post added', post_ids: user.post_ids });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).populate('post_ids');
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
