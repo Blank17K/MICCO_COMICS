@@ -1,38 +1,92 @@
-:root {
-    --titles: 'Bangers', cursive;
-    --pharagraphs: 'Grandstander', cursive;
-    --messages: 'Delius', cursive;
-    --subtitles: 'Gloria Hallelujah', cursive;
-
-    --baseColor:#CB162B;
-    --secBColor:#1B294E;
-    --thrdBColor:#FFD21D;
-    --grey:#363636;
-    --white:#fff;
+.profileSection{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 0;
+}
+.profileHeader{
+    display: grid;
+    grid-template-columns: minmax(10rem, 16rem) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: stretch;
+}
+.profileId{
+    min-width: 0;
+}
+.profileId h2{
+    font-size: 1.25rem;
+    margin-top: .75rem;
+    overflow-wrap: anywhere;
+}
+.profilePic{
+    display: block;
+    width: 100%;
+    max-width: 10rem;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+    background: var(--fourthBColor);
+}
+.profilePic.small{
+    width: 4rem;
+    height: 4rem;
+    max-width: none;
 }
 .bioUser{
     position: relative;
+    min-height: 9rem;
+    padding-bottom: 4.5rem;
 }
-.profileSection{
-    padding: 1rem;
+.bio{
+    margin: 0;
+    overflow-wrap: anywhere;
 }
-.editP {
-    transform-origin: center;
+.editP{
     position: absolute;
-    right: .5rem;
-    bottom: -2rem;
-
-    width: 64px;
-    height: 64px;
+    right: .75rem;
+    bottom: .75rem;
+    width: 3.25rem;
+    height: 3.25rem;
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: var(--grey);
-    color: var(--white);
-    font-size: 2rem;
-    padding: 1rem; /* careful — padding adds to size unless box-sizing: border-box */
+    background: var(--ink);
+    color: var(--fourthBColor);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+.profileBody{
+    display: grid;
+    grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+.friendReq{
+    min-height: 6rem;
 }
 .personalSummary{
-    padding: 3rem;
+    min-width: 0;
+}
+.personalSummary > h3.section{
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+.courcell{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 2.25rem 2rem;
+    padding: 0 1.75rem 1.75rem 1.75rem;
+}
+.activeFriends{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+@media (max-width: 991.98px){
+    .profileBody{ grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 575.98px){
+    .profileHeader{ grid-template-columns: minmax(0, 1fr); }
+    .courcell{ grid-template-columns: minmax(0, 1fr); }
 }

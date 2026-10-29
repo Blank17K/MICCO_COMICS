@@ -27,17 +27,17 @@ export default class Header extends React.Component {
             return <Navigate to="/" replace={true} />;
         }
         return(
-            <div className="row mb-2 header section">
+            <div className="header section appHeader">
                 {/*<img src={headerBar} alt="header" className="background"/>*/}
-                <h1 className="title col-9">MICCO</h1>
-                <button className="btn_act col" onClick={()=>{
+                <h1 className="title appTitle">MICCO</h1>
+                <button className="btn_act" onClick={()=>{
                     this.navigateToHome("/");
                 }}>
                     Logout
                 </button>
-                <button className="col ms-3 btn_act" onClick={()=>{this.setState(prev=>({showAddPost: !prev.showAddPost}))}}>Create Post</button>
+                <button className="btn_act" onClick={()=>{this.setState(prev=>({showAddPost: !prev.showAddPost}))}}>Create Post</button>
                 {this.state.showAddPost==true?<AddPost closeP={this.closeAddPost}/>:''}
             </div>
         );
     }
-}
+}

@@ -1,19 +1,20 @@
-:root{
-    --baseColor:#CB162B;
-    --secBColor:#1B294E;
-    --thrdBColor:#FFD21D;
-}
-
 .signUp_In{
     position: absolute;
     top: 5%;
     left: 5%;
     z-index: 4;
+    display: flex;
+    gap: 1rem;
 }
 .spots{
-    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0;
     position: relative;
     height: 100vh;
+    height: 100dvh;
     background: white;
     overflow: hidden;
     background-image: radial-gradient(black 2px, transparent 0);
@@ -52,55 +53,81 @@
 }
 
 .mainH{
-    font-size: 8rem !important;
+    font-size: clamp(3.5rem, 15vw, 8rem) !important;
+    line-height: 1.1;
     color: var(--baseColor);
     width: fit-content;
     text-shadow: 10px 10px var(--secBColor);
 }
 .splash{
+    position: relative;
+    z-index: 4;
     width: fit-content;
+    max-width: 100%;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 /*___________________________________________________*/
 
+/* Modal (used by splash login/register, add-post, edit-profile) */
 .backDrop{
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
     background-color: rgba(0,0,0,.5);
     backdrop-filter: blur(3px);
-    z-index: 10;
+    z-index: 1000;
+    overflow-y: auto;
+}
+.formBox{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(30rem, 100%);
+    max-height: 100%;
+    overflow-y: auto;
+    background-color: lightgray;
+    box-shadow: 10px 10px black;
 }
 .formBox h1{
     position: relative;
     padding: .5rem 1rem;
     background-color: white;
-    width:100%;
-    margin-bottom: 1rem;
+    width: 100%;
+    margin: 0 0 1rem;
 }
-.formBox div{
-    padding: 1.5rem;
+.formFields{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem 1.5rem;
 }
-.formBox{
-    position: relative;
-    padding: 0;
-    width:30vw;
-    height: 60vh;
-    background-color: lightgray;
-    box-shadow: 10px 10px black;
+.formFields > input,
+.formFields > .input-group{
+    width: 100%;
+}
+.formFields .userAct{
+    margin-top: .25rem;
+}
+.formFields .text-danger{
+    margin: 0;
+    align-self: flex-start;
 }
 .link_chk{
-    position: absolute;
+    margin: 0;
     cursor: pointer;
     text-align: center;
-    bottom: 3%;
 }
 .link_chk:hover{
     text-decoration: underline;
-}
-.text-danger{
-    position: absolute;
-    top: 18%;
-    left: 5%;
-    
 }

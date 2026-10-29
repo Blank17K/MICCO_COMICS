@@ -116,7 +116,7 @@ export default function Profile() {
         return (
             <div className="formBox">
                 <h1 className="title">EDIT PROFILE</h1>
-                <div className="row justify-content-center align-items-center">
+                <div className="formFields">
                     {editError   !== "" && <p className="text-danger">{editError}</p>}
                     {editSuccess !== "" && <p className="text-success">{editSuccess}</p>}
 
@@ -138,7 +138,7 @@ export default function Profile() {
     const backDropEdit = () => {
         if (!editOpen) return null
         return (
-            <div className="backDrop row justify-content-center align-items-center">
+            <div className="backDrop">
                 <div className="closeInteraction" onClick={closeEdit}>X</div>
                 {renderEditModal()}
             </div>
@@ -146,11 +146,11 @@ export default function Profile() {
     }
 
     return (
-        <div className="col profileSection">
+        <div className="profileSection">
             {backDropEdit()}
 
-            <div className="row profileHeader">
-                <div className="col-3">
+            <div className="profileHeader">
+                <div className="profileId">
                     <img
                         alt="profile_picture"
                         src={user?.profilePic || Ppic}
@@ -158,7 +158,7 @@ export default function Profile() {
                     />
                     <h2>User Name: {user?.username || "Guest"}</h2>
                 </div>
-                <div className="section col bioUser">
+                <div className="section bioUser">
                     <p className="bio">{user?.bio || ""}</p>
                     <span className='editP' onClick={() => setEditOpen(true)}>
                         <i className="lni lni-pen-to-square"></i>
@@ -166,24 +166,24 @@ export default function Profile() {
                 </div>
             </div>
 
-            <div className='row'>
-                <div className='col-3 section'>
+            <div className='profileBody'>
+                <div className='section friendReqBox'>
                     <h4>Friend Request:</h4>
                     <div className='friendReq'></div>
                 </div>
-                <div className='col personalSummary'>
+                <div className='personalSummary'>
                     <h3 className='section'>Personal Collection</h3>
-                    <div className='courcell row'>
-                        <div className={`col card ${comicPosts[1].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[1].id}`}><Post data={comicPosts[1]}/></Link></div>
-                        <div className={`col card ${comicPosts[2].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[2].id}`}><Post data={comicPosts[2]}/></Link></div>
-                        <div className={`col card ${comicPosts[0].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[0].id}`}><Post data={comicPosts[0]}/></Link></div>
+                    <div className='courcell'>
+                        <div className={`card ${comicPosts[1].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[1].id}`}><Post data={comicPosts[1]}/></Link></div>
+                        <div className={`card ${comicPosts[2].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[2].id}`}><Post data={comicPosts[2]}/></Link></div>
+                        <div className={`card ${comicPosts[0].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[0].id}`}><Post data={comicPosts[0]}/></Link></div>
                     </div>
-                    <h3 className='section mt-3'>Active Friends</h3>
-                    <div className='row'>
-                        <img alt="profile_picture" src={Ppic} className="profilePic col"/>
-                        <img alt="profile_picture" src={Ppic} className="profilePic col"/>
-                        <img alt="profile_picture" src={Ppic} className="profilePic col"/>
-                        <img alt="profile_picture" src={Ppic} className="profilePic col"/>
+                    <h3 className='section mt-4'>Active Friends</h3>
+                    <div className='activeFriends'>
+                        <img alt="profile_picture" src={Ppic} className="profilePic small"/>
+                        <img alt="profile_picture" src={Ppic} className="profilePic small"/>
+                        <img alt="profile_picture" src={Ppic} className="profilePic small"/>
+                        <img alt="profile_picture" src={Ppic} className="profilePic small"/>
                     </div>
                 </div>
             </div>

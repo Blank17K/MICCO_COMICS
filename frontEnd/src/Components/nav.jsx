@@ -1,43 +1,28 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../styling/textStyle.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-export default function Nav() {
-  const [active, setActive] = useState("home"); // "home" | "community" | "profile"
-  const navigate = useNavigate();
+const LINKS = [
+  { key: "home", label: "Home", path: "/home" },
+  { key: "community", label: "Community", path: "/community" },
+  { key: "profile", label: "Profile", path: "/profile" },
+];
 
-  const handleNav = (key, path) => {
-    setActive(key);
-    navigate(path);
-  };
+export default function Nav() {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   return (
-    <div className="col-3 section row justify-content-center align-items-center">
-      <div className="row justify-content-center align-items-center">
+    <nav className="section appNav">
+      {LINKS.map(({ key, label, path }) => (
         <button
-          className={`btn_act ${active === "home" ? "active" : ""} mt-3 mb-2`}
-          onClick={() => handleNav("home", "/home")}
+          key={key}
+          className={`btn_act ${pathname.startsWith(path) ? "active" : ""}`}
+          onClick={() => navigate(path)}
         >
-          Home
+          {label}
         </button>
-      </div>
-      <div className="row justify-content-center align-items-center">
-        <button
-          className={`btn_act ${active === "community" ? "active" : ""} mb-2`}
-          onClick={() => handleNav("community", "/community")}
-        >
-          Community
-        </button>
-      </div>
-      <div className="row justify-content-center align-items-center">
-        <button
-          className={`btn_act ${active === "profile" ? "active" : ""} mb-2`}
-          onClick={() => handleNav("profile", "/profile")}
-        >
-          Profile
-        </button>
-      </div>
-    </div>
+      ))}
+    </nav>
   );
 }

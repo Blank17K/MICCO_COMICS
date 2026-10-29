@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Grandstander:wght@100..900&family=Delius&family=Gloria+Hallelujah&display=swap');
 
+/* Single source of truth for the palette + fonts */
 :root {
     --titles: 'Bangers', cursive;
     --pharagraphs: 'Grandstander', cursive;
@@ -9,6 +10,13 @@
     --baseColor:#CB162B;
     --secBColor:#1B294E;
     --thrdBColor:#FFD21D;
+    --fourthBColor:#fff;
+    --ink:#363636;
+    --mute:#5a5a5a;
+    --panel:#e1e1e1;
+}
+html, body, #root{
+    min-height: 100%;
 }
 body{
     margin: 0 !important;
@@ -35,6 +43,7 @@ body{
     padding: .5rem  1rem;
     border: solid 5px black;
     width: fit-content;
+    max-width: 100%;
 }
 .btn_act{
     border:none;
@@ -44,20 +53,20 @@ body{
     background-color: var(--thrdBColor);
     box-shadow: 5px 5px var(--baseColor);
     width: fit-content;
+    white-space: nowrap;
 }
 .btn_act:hover{
     background-color: var(--baseColor);
     box-shadow: 5px 5px var(--thrdBColor);
     color: white;
 }
-.userAct{
-    position: absolute;
-    bottom: 13%;
+.btn_act:disabled{
+    opacity: .6;
 }
 .closeInteraction{
     position: absolute;
-    top: 3%;
-    right: 5%;
+    top: 1rem;
+    right: 1rem;
     font-size: 2rem;
     font-family: var(--titles);
     color: black;
@@ -76,31 +85,32 @@ input{
     padding: .5rem 1rem;
     transform: skewX(-10deg);
     position: relative;
+    min-width: 0;
 }
 input:focus{
     outline: none;
     border: solid 2px var(--thrdBColor);
-} 
+}
+input[type="file"]{
+    transform: none;
+}
 
 .closeMenu{
     visibility: hidden;
     opacity: 0;
+    pointer-events: none;
 }
 
-
+/* Grey bordered panel used for header / nav / headings / bars */
 .section{
     border: solid 5px black;
-    margin-left:  0;
-    margin-right: 0;
+    margin: 0;
     background-color: grey;
-    padding: 1rem 0;
+    padding: 1rem;
 }
 .active{
     background-color: var(--baseColor);
     box-shadow: 5px 5px var(--thrdBColor);
-}
-.elementBox{
-    margin:0;
 }
 .background{
     z-index: -1;

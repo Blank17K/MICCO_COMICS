@@ -1,0 +1,77 @@
+/* App shell: header on top, nav on the left, scrollable content on the right */
+.appShell{
+    display: grid;
+    grid-template-columns: 14rem minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas:
+        "header header"
+        "nav    main";
+    gap: .75rem;
+    height: 100vh;
+    height: 100dvh;
+    padding: .75rem;
+    overflow: hidden;
+}
+.appHeader{ grid-area: header; }
+.appNav{ grid-area: nav; }
+.appMain{
+    grid-area: main;
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: .25rem .25rem 1rem 0;
+}
+
+/* Header */
+.appHeader{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .75rem;
+    padding: .75rem 1rem;
+    margin: 0;
+    position: relative;
+}
+.appTitle{ flex: 1 1 auto; margin: 0; }
+
+/* Side nav */
+.appNav{
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.5rem 1rem;
+    margin: 0;
+    overflow-y: auto;
+}
+.appNav .btn_act{
+    width: 100%;
+    padding-left: .5rem;
+    padding-right: .5rem;
+}
+
+/* Tablet / phone: nav becomes a strip under the header */
+@media (max-width: 767.98px){
+    .appShell{
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto minmax(0, 1fr);
+        grid-template-areas:
+            "header"
+            "nav"
+            "main";
+        padding: .5rem;
+        gap: .5rem;
+    }
+    .appNav{
+        flex-direction: row;
+        gap: .75rem;
+        padding: .75rem;
+    }
+    .appNav .btn_act{
+        flex: 1 1 0;
+        min-width: 0;
+        font-size: 1.1rem;
+    }
+    .appHeader .btn_act{ font-size: 1.1rem; padding: .25rem 1rem; }
+    .appTitle{ font-size: 2rem; }
+}

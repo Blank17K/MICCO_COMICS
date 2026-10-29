@@ -12,6 +12,8 @@ const postSchema = new mongoose.Schema({
   post_description: { type: String, required: true },
   imgPath:          { type: String, default: '' },          // empty for now
   likes:            { type: Number, default: 0 },
+  likedBy:          [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  reports:          { type: Number, default: 0 },
   comments:         { type: [commentSchema], default: [] }
 }, { timestamps: true });
 

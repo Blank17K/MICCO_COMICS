@@ -1,9 +1,26 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
 const User = require('../models/Userc');
 const Post = require('../models/Post.cjs');
 
 const router = express.Router();
+const profileDir = path.join(__dirname, '..', 'upload', 'profiles');
+fs.mkdirSync(profileDir, { recursive: true });
+const profileStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, profileDir),
+  filename: (req, file, cb) => {
+    const extension = path.extname(file.originalname).toLowerCase();
+    cb(null, `${req.params.id}-${Date.now()}${extension}`);
+  }
+});
+const profileUpload = multer({
+  storage: profileStorage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => cb(null, file.mimetype.startsWith('image/'))
+});
 
 router.post('/register', async (req, res) => {
   try {
@@ -58,7 +75,7 @@ router.get('/check-username/:username', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', profileUpload.single('profilePicFile'), async (req, res) => {
   try {
     const { username, bio, profilePic, password } = req.body;
     const user = await User.findById(req.params.id);
@@ -71,7 +88,15 @@ router.put('/:id', async (req, res) => {
     }
 
     if (bio !== undefined) user.bio = bio;
-    if (profilePic !== undefined) user.profilePic = profilePic;
+    if (req.file) {
+      if (user.profilePic?.startsWith('/uploads/profiles/')) {
+        const oldFile = path.join(__dirname, '..', user.profilePic.replace('/uploads/', 'upload/'));
+        if (fs.existsSync(oldFile)) fs.unlinkSync(oldFile);
+      }
+      user.profilePic = `/uploads/profiles/${req.file.filename}`;
+    } else if (profilePic !== undefined) {
+      user.profilePic = profilePic;
+    }
 
     if (password) {
       user.password = await bcrypt.hash(password, 10);
@@ -109,7 +134,11 @@ router.get('/:id', async (req, res) => {
   try {
     const user = await User.findById(req.params.id).populate('post_ids');
     if (!user) return res.status(404).json({ message: 'User not found' });
-    res.json(user);
+    const posts = await Post.find({ email: user.email }).sort({ createdAt: -1 });
+    const userData = user.toObject();
+    userData.post_ids = posts;
+    delete userData.password;
+    res.json(userData);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

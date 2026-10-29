@@ -55,7 +55,7 @@ export default class Home extends React.Component {
         const posts = this.getFilteredPosts();
 
         if (posts.length === 0) {
-            return <p className="text-center">No posts yet.</p>;
+            return <p className="text-center emptyMsg">No posts yet.</p>;
         }
 
         return posts.map((post) => {
@@ -69,7 +69,7 @@ export default class Home extends React.Component {
             };
 
             return (
-                <div key={post._id} className={`col card ${mappedPost.isAlbum ? 'album' : ''} postCards`}>
+                <div key={post._id} className={`card ${mappedPost.isAlbum ? 'album' : ''} postCards`}>
                     <Link to={`/posts/${post.post_id}`}>
                         <Post data={mappedPost} />
                     </Link>
@@ -82,25 +82,25 @@ export default class Home extends React.Component {
         const { loading, error } = this.state;
 
         return (
-            <div className="col homeSection">
-                <div className="section row searchBar">
+            <div className="homeSection">
+                <div className="section searchBar">
                     <input
                         type="text"
-                        className="col"
+                        className="searchInput"
                         placeholder="Search"
                         value={this.state.searchTerm}
                         onChange={this.handleSearchChange}
                     />
-                    <button className="btn_act col-2 ms-3">Search</button>
+                    <button className="btn_act">Search</button>
                 </div>
 
                 {loading && <p className="text-center">Loading posts...</p>}
                 {error && <p className="text-center text-danger">{error}</p>}
 
-                <div className="row row-cols-4 postings justify-content-center">
+                <div className="postings">
                     {!loading && !error && this.displayPhotos()}
                 </div>
             </div>
         );
     }
-}
+}

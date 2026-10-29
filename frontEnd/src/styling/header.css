@@ -1,6 +1,6 @@
+/* Header layout lives in layout.css (.appHeader) */
 .header{
-    margin:  0;
-    padding: 1rem;
+    margin: 0;
     overflow: visible;
     position: relative;
 }

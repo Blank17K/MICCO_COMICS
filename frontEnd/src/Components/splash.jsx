@@ -107,7 +107,7 @@ export default class Splash extends React.Component {
             <div className="formBox">
                 {this.state.validatedLog === true ? <Navigate to={"/home"} replace={true} /> : ""}
                 <h1 className="title">LOGIN</h1>
-                <div className="row justify-content-center align-items-center">
+                <div className="formFields">
                     {this.state.errorMessage === "" ? "" : <p className="text-danger">{this.state.errorMessage}</p>}
                     <input type="text" placeholder="Username" className="mb-3" ref={this.userName} />
                     <input type="password" placeholder="Password" className="mb-3" ref={this.password} />
@@ -136,7 +136,7 @@ export default class Splash extends React.Component {
     return (
         <div className="formBox">
             <h1 className="title">REGISTER</h1>
-            <div className="row justify-content-center align-items-center">
+            <div className="formFields">
                 {this.state.errorMessage !== "" && (
                     <p className="text-danger">{this.state.errorMessage}</p>
                 )}
@@ -166,7 +166,7 @@ export default class Splash extends React.Component {
 
     backDrop() {
         return (
-            <div className={`backDrop row justify-content-center align-items-center ${this.state.close}`}>
+            <div className={`backDrop ${this.state.close}`}>
                 <div className="closeInteraction" onClick={() => this.setState({ close: "closeMenu" })}>X</div>
                 {this.state.loginActive ? this.login() : this.register()}
             </div>
@@ -175,17 +175,17 @@ export default class Splash extends React.Component {
 
     render() {
         return (
-            <div className="spots row justify-content-center align-items-center">
+            <div className="spots">
                 {this.backDrop()}
                 <div className="signUp_In">
                     <button className="btn_act" onClick={() => this.setState({ loginActive: true, close: "" })}>LOGIN</button>
                     <button className="btn_act ms-3" onClick={() => this.setState({ loginActive: false, close: "" })}>REGISTER</button>
                 </div>
-                <div className="splash align-self-center">
+                <div className="splash">
                     <h1 className="title mainH">MICCO</h1>
                     <div className="actBox">Where all your favourites are</div>
                 </div>
             </div>
         );
     }
-}
+}

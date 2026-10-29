@@ -60,14 +60,14 @@ function PostViewer() {
     if (!post) return null;
 
     return (
-        <div className="col section postViwer">
-            <div className="input-group mb-3">
+        <div className="section postViewer">
+            <div className="input-group viewerSearch">
                 <input type="text" className="form-control" placeholder="Search" />
                 <span className="input-group-text"><i className="lni lni-search-2"></i></span>
             </div>
 
-            <div className="row">
-                <div className="imgCapcell col-5 ms-5">
+            <div className="viewerGrid">
+                <div className="imgCapcell">
                     <img
                         className="imgCap"
                         src={post.imgPath ? post.imgPath : imgHolder}
@@ -75,13 +75,13 @@ function PostViewer() {
                     />
                 </div>
 
-                <div className="imgInfo col">
+                <div className="imgInfo">
                     <h3 className="title">{post.post_title}</h3>
                     <p className="ImgDescrip">{post.post_description}</p>
 
                     <p className="likeComments">
-                        <span className="lik"><i className="lni lni-heart"></i>{post.likes}</span>
-                        <span className="com"><i className="lni lni-comment-1"></i>{post.comments.length}</span>
+                        <span className="lik"><i className="lni lni-heart"></i> {post.likes}</span>
+                        <span className="com"><i className="lni lni-comment-1"></i> {post.comments.length}</span>
                     </p>
 
                     <div className="commentBox">
@@ -93,7 +93,7 @@ function PostViewer() {
                             ))}
                         </div>
 
-                        <div className="input-group mb-3">
+                        <div className="input-group">
                             <input
                                 type="text"
                                 className="form-control"
@@ -111,22 +111,22 @@ function PostViewer() {
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div className="row postFoot mt-3">
-                    <div
-                        className="icon_btn col ms-5"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => navigate(-1)}
-                    >
-                        <i className="lni lni-arrow-left"></i>
-                    </div>
-                    <div className="icon_btn col reoprt">
-                        <i className="lni lni-megaphone-1"></i>
-                    </div>
+            <div className="postFoot">
+                <div
+                    className="icon_btn"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => navigate(-1)}
+                >
+                    <i className="lni lni-arrow-left"></i>
+                </div>
+                <div className="icon_btn reoprt">
+                    <i className="lni lni-megaphone-1"></i>
                 </div>
             </div>
         </div>
     );
 }
 
-export default PostViewer;
+export default PostViewer;

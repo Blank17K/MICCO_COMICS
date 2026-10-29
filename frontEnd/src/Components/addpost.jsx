@@ -56,46 +56,43 @@ export default function AddPost(props) {
     };
 
     return (
-        <div className="backDrop row justify-content-center align-items-center">
+        <div className="backDrop">
             <div className="closeInteraction" onClick={props.closeP}>X</div>
             <div className="formBox">
                 <h1 className="title">Add Post</h1>
 
-                {error && <p className="text-danger">{error}</p>}
+                <div className="formFields">
+                    {error && <p className="text-danger">{error}</p>}
 
-                <div className="mb-3">
                     <input
                         type="text"
-                        className=""
                         id="floatingInput"
                         placeholder="Title of Post"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
-                </div>
 
-                <div className="">
                     <textarea
-                        className=""
                         placeholder="Write your description here"
                         id="floatingTextarea"
+                        rows={5}
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     ></textarea>
-                </div>
 
-                <div className="input-group mb-3">
-                    <input type="file" className="form-control" id="inputGroupFile02" />
-                    <label className="input-group-text" htmlFor="inputGroupFile02">Upload</label>
-                </div>
+                    <div className="input-group">
+                        <input type="file" className="form-control" id="inputGroupFile02" />
+                        <label className="input-group-text" htmlFor="inputGroupFile02">Upload</label>
+                    </div>
 
-                <button
-                    className="btn_act"
-                    onClick={handleSubmit}
-                    disabled={loading}
-                >
-                    {loading ? '...' : 'UPLOAD'}
-                </button>
+                    <button
+                        className="btn_act userAct"
+                        onClick={handleSubmit}
+                        disabled={loading}
+                    >
+                        {loading ? '...' : 'UPLOAD'}
+                    </button>
+                </div>
             </div>
         </div>
     );

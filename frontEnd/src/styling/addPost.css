@@ -1,17 +1,15 @@
-:root{
-    --baseColor:#CB162B;
-    --secBColor:#1B294E;
-    --thrdBColor:#FFD21D;
-    --fourthBColor: #fff;
-    --grey:#e1e1e1;
-}
-.addPostF{
-    width: 50vw;
-    background-color: var(--grey);
-    box-shadow: 10px 10px black;
-    padding: 2rem;
-}
-
-#floatingTextarea, #floatingInput{
+/* Add-post modal: shares .backDrop / .formBox with splash.css */
+.formFields textarea,
+.formFields input[type="text"]{
     width: 100%;
+}
+.formFields textarea{
+    border: none;
+    padding: .5rem 1rem;
+    resize: vertical;
+    background: white;
+}
+.formFields textarea:focus{
+    outline: none;
+    border: solid 2px var(--thrdBColor);
 }

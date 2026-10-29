@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import Ppic from './imgs/PP.svg'
+import '../styling/community.css'
 
 export default function Community() {
     const [friends, setFriends] = useState([]);
@@ -13,32 +14,32 @@ export default function Community() {
     }
     const displayFriends = (friends)=>{
         return friends.map((friend, index) => (
-            <div key={index} className="friendItem row" onClick={() => navigate(`/profile/${friend._id}`)}>
-                <img src={friend.profilePic || Ppic} alt="Profile" className="col-3 friendProfilePic" />
-                <p className="col">{friend.userName}</p>
+            <div key={index} className="friendItem" onClick={() => navigate(`/profile/${friend._id}`)}>
+                <img src={friend.profilePic || Ppic} alt="Profile" className="friendProfilePic" />
+                <p>{friend.userName}</p>
             </div>
         ));
     }
   return (
-    <div className="community row col">
-        <div className="col-3">
+    <div className="community">
+        <aside className="section friendsPane">
             <h2>Friends</h2>
             <hr/>
             <div className="friendList">
                 {displayFriends(friends)}
             </div>
-        </div>
-        <div className="col messagesSection">
-            <div className="row messageHeader justify-content-center align-items-center">
-                <img src={Ppic} alt="Profile" className="col-3 friendProfilePic" />
-                <h3 className="col">{"Unknown User"}</h3>
+        </aside>
+        <div className="section messagesSection">
+            <div className="messageHeader">
+                <img src={Ppic} alt="Profile" className="friendProfilePic" />
+                <h3>{"Unknown User"}</h3>
             </div>
-            <div className="row messageBody">
+            <div className="messageBody">
 
             </div>
-            <div className="row messageInput">
-                <input type="text" placeholder="Type a message..." className="col-10" />
-                <button className="col-2">Send</button>
+            <div className="messageInput">
+                <input type="text" placeholder="Type a message..." />
+                <button className="btn_act">Send</button>
             </div>
         </div>
     </div>
