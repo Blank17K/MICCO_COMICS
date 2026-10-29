@@ -11,6 +11,7 @@ const postRoutes = require('./routes/postRoutes.cjs');
 const app = express();
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, { cors: { origin: '*' } });
+const onlineUsers = new Map();
 app.use(express.json());
 
 app.use(cors());
@@ -29,17 +30,46 @@ app.use((err, req, res, next) => {
   res.status(400).json({ message: err.message || 'Request failed' });
 });
 
+const broadcastOnlineUsers = () => {
+  io.emit('online-users', Array.from(onlineUsers.keys()));
+};
+
 io.on('connection', socket => {
+  let joinedUserId = null;
+
   socket.on('join-user', userId => {
-    if (userId) socket.join(`user:${userId}`);
+    if (!userId) return;
+
+    joinedUserId = String(userId);
+    socket.join(`user:${joinedUserId}`);
+    const userSockets = onlineUsers.get(joinedUserId) || new Set();
+    userSockets.add(socket.id);
+    onlineUsers.set(joinedUserId, userSockets);
+    broadcastOnlineUsers();
   });
+
   socket.on('private-message', ({ to, from, message }) => {
     if (!to || !from || !message?.trim()) return;
+    if (!onlineUsers.has(String(to))) {
+      socket.emit('message-error', { message: 'Your friend is offline' });
+      return;
+    }
+
     io.to(`user:${to}`).emit('private-message', {
       from,
       message: message.trim(),
       sentAt: new Date().toISOString()
     });
+  });
+
+  socket.on('disconnect', () => {
+    if (!joinedUserId) return;
+    const userSockets = onlineUsers.get(joinedUserId);
+    if (!userSockets) return;
+
+    userSockets.delete(socket.id);
+    if (userSockets.size === 0) onlineUsers.delete(joinedUserId);
+    broadcastOnlineUsers();
   });
 });
 

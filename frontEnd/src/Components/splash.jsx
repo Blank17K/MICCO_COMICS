@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styling/textStyle.css';
 import '../styling/splash.css';
+import { API_BASE, readResponse } from '../api.js';
 
 export default class Splash extends React.Component {
     constructor(props) {
@@ -42,18 +43,12 @@ export default class Splash extends React.Component {
         this.setState({ errorMessage: "", loading: true });
 
         try {
-            const res = await fetch('http://localhost:5000/api/users/login', {
+            const res = await fetch(`${API_BASE}/users/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
             });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                this.setState({ errorMessage: data.message || "Login failed", loading: false });
-                return;
-            }
+            const data = await readResponse(res);
 
             // save the logged-in user so other pages can use it
             localStorage.setItem('user', JSON.stringify(data.user));
@@ -81,18 +76,12 @@ export default class Splash extends React.Component {
         this.setState({ errorMessage: "", loading: true });
 
         try {
-            const res = await fetch('http://localhost:5000/api/users/register', {
+            const res = await fetch(`${API_BASE}/users/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password, email })
             });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                this.setState({ errorMessage: data.message || "Registration failed", loading: false });
-                return;
-            }
+            const data = await readResponse(res);
 
             // auto-login after register (or switch to login screen)
             localStorage.setItem('user', JSON.stringify(data.user));

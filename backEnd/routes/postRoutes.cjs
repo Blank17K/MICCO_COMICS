@@ -69,6 +69,47 @@ router.post('/', upload.single('image'), async (req, res) => {
   }
 });
 
+router.post('/:id/friend-request', async (req, res) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) return res.status(400).json({ message: 'Valid userId required' });
+
+    const requester = await User.findById(userId);
+    const post = await Post.findOne({ post_id: Number(req.params.id) });
+    if (!requester) return res.status(404).json({ message: 'Requesting user not found' });
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+
+    const target = await User.findOne({ email: post.email });
+    if (!target) return res.status(404).json({ message: 'Post author not found' });
+    if (requester._id.equals(target._id)) {
+      return res.status(400).json({ message: 'Cannot send a friend request to yourself' });
+    }
+    if (requester.friends.some(friend => friend.equals(target._id))) {
+      return res.status(400).json({ message: 'Already friends' });
+    }
+    if (target.friendRequests.some(request => request.equals(requester._id))) {
+      return res.status(400).json({ message: 'Friend request already pending' });
+    }
+
+    if (requester.friendRequests.some(request => request.equals(target._id))) {
+      requester.friendRequests = requester.friendRequests.filter(
+        request => !request.equals(target._id)
+      );
+      requester.friends.push(target._id);
+      target.friends.push(requester._id);
+      await requester.save();
+      await target.save();
+      return res.json({ message: 'Friend request accepted', friends: requester.friends });
+    }
+
+    target.friendRequests.push(requester._id);
+    await target.save();
+    res.json({ message: 'Friend request sent' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 router.post('/:id/like', async (req, res) => {
   try {
     const { userId } = req.body;

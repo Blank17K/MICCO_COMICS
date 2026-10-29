@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   bio:      { type: String, default: '' },
   profilePic: { type: String, default: '' },
-  post_ids: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
+  post_ids: [{ type: mongoose.Schema.Types.Mixed }],
   friends:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 });

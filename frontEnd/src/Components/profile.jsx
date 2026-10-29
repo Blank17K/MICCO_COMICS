@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Ppic from './imgs/PP.svg'
 import '../styling/profile.css'
 import Post from './post'
+import { API_BASE, mediaUrl, readResponse } from '../api.js'
 
 const comicPosts = [
     { id: 1, title: "The Invisible Man's Wardrobe Malfunction", content: "...", isAlbum: true,  likes: 10, comments: 30 },
@@ -16,11 +17,13 @@ export default function Profile() {
     const [editError, setEditError]     = useState("")
     const [editSuccess, setEditSuccess] = useState("")
     const [editLoading, setEditLoading] = useState(false)
+    const [profileImage, setProfileImage] = useState(null)
+    const [friendRequests, setFriendRequests] = useState([])
+    const [friendRequestError, setFriendRequestError] = useState("")
 
     // ---- refs (mirrors this.editUsername, this.editBio, ...) ----
     const editUsername   = useRef(null)
     const editBio        = useRef(null)
-    const editProfilePic = useRef(null)
     const editPassword   = useRef(null)
 
     // ---- cached user from localStorage (set by Splash login/register) ----
@@ -29,19 +32,49 @@ export default function Profile() {
         return stored ? JSON.parse(stored) : null
     })
 
+    useEffect(() => {
+        const userId = user?._id || user?.id
+        if (!userId) return
+
+        const fetchFriendRequests = async () => {
+            try {
+                const res = await fetch(`${API_BASE}/users/${userId}/friends`)
+                const data = await readResponse(res)
+                setFriendRequests(data.friendRequests || [])
+                setFriendRequestError("")
+            } catch (err) {
+                setFriendRequestError(err.message || "Could not load friend requests")
+            }
+        }
+
+        fetchFriendRequests()
+    }, [user])
+
+    const respondToFriendRequest = async (requesterId, action) => {
+        const userId = user?._id || user?.id
+        try {
+            const res = await fetch(`${API_BASE}/users/${userId}/friend-requests/${requesterId}/${action}`, {
+                method: 'POST'
+            })
+            await readResponse(res)
+            setFriendRequests(current => current.filter(request => request._id !== requesterId))
+        } catch (err) {
+            setFriendRequestError(err.message || "Could not update friend request")
+        }
+    }
+
     // populate refs once the modal opens
     useEffect(() => {
         if (!editOpen || !user) return
         if (editUsername.current)   editUsername.current.value   = user.username   || ""
         if (editBio.current)        editBio.current.value        = user.bio        || ""
-        if (editProfilePic.current) editProfilePic.current.value = user.profilePic || ""
         if (editPassword.current)   editPassword.current.value   = ""
     }, [editOpen, user])
 
     const clearEditFields = () => {
         if (editUsername.current)   editUsername.current.value   = ""
         if (editBio.current)        editBio.current.value        = ""
-        if (editProfilePic.current) editProfilePic.current.value = ""
+        setProfileImage(null)
         if (editPassword.current)   editPassword.current.value   = ""
     }
 
@@ -66,10 +99,9 @@ export default function Profile() {
 
         const username   = editUsername.current?.value.trim()   || ""
         const bio        = editBio.current?.value.trim()        || ""
-        const profilePic = editProfilePic.current?.value.trim() || ""
         const password   = editPassword.current?.value.trim()   || ""
 
-        if (!username && !bio && !profilePic && !password) {
+        if (!username && !bio && !profileImage && !password) {
             setEditError("Please fill in at least one field.")
             return
         }
@@ -78,25 +110,18 @@ export default function Profile() {
         setEditSuccess("")
         setEditLoading(true)
 
-        const payload = {}
-        if (username)   payload.username   = username
-        if (bio)        payload.bio        = bio
-        if (profilePic) payload.profilePic = profilePic
-        if (password)   payload.password   = password
+        const formData = new FormData()
+        if (username) formData.append('username', username)
+        if (bio) formData.append('bio', bio)
+        if (profileImage) formData.append('profilePicFile', profileImage)
+        if (password) formData.append('password', password)
 
         try {
-            const res = await fetch(`http://localhost:5000/api/users/${userId}`, {
+            const res = await fetch(`${API_BASE}/users/${userId}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: formData
             })
-            const data = await res.json()
-
-            if (!res.ok) {
-                setEditError(data.message || "Update failed")
-                setEditLoading(false)
-                return
-            }
+            const data = await readResponse(res)
 
             // update cached user so the rest of the app sees the new data
             localStorage.setItem('user', JSON.stringify(data.user))
@@ -106,7 +131,7 @@ export default function Profile() {
             setEditLoading(false)
             closeEdit()
         } catch (err) {
-            setEditError("Could not reach server")
+            setEditError(err.message || "Could not reach server")
             setEditLoading(false)
         }
     }
@@ -122,7 +147,16 @@ export default function Profile() {
 
                     <input type="text"     placeholder="New Username (optional)"     className="mb-3" ref={editUsername} />
                     <input type="text"     placeholder="Bio (optional)"              className="mb-3" ref={editBio} />
-                    <input type="text"     placeholder="Profile Pic URL (optional)"  className="mb-3" ref={editProfilePic} />
+                    <div className="input-group mb-3">
+                        <input
+                            type="file"
+                            className="form-control"
+                            id="profilePicFile"
+                            accept="image/*"
+                            onChange={(e) => setProfileImage(e.target.files?.[0] || null)}
+                        />
+                        <label className="input-group-text" htmlFor="profilePicFile">Upload</label>
+                    </div>
                     <input type="password" placeholder="New Password (optional)"     className="mb-3" ref={editPassword} />
 
                     <button className="btn_act mb-3 userAct" onClick={handleEditProfile} disabled={editLoading}>
@@ -153,7 +187,7 @@ export default function Profile() {
                 <div className="profileId">
                     <img
                         alt="profile_picture"
-                        src={user?.profilePic || Ppic}
+                        src={mediaUrl(user?.profilePic) || Ppic}
                         className="profilePic"
                     />
                     <h2>User Name: {user?.username || "Guest"}</h2>
@@ -169,7 +203,34 @@ export default function Profile() {
             <div className='profileBody'>
                 <div className='section friendReqBox'>
                     <h4>Friend Request:</h4>
-                    <div className='friendReq'></div>
+                    <div className='friendReq'>
+                        {friendRequestError && <p className="text-danger">{friendRequestError}</p>}
+                        {!friendRequestError && friendRequests.length === 0 && <p>No active requests.</p>}
+                        {friendRequests.map(request => (
+                            <div key={request._id} className="friendItem">
+                                <img
+                                    src={mediaUrl(request.profilePic) || Ppic}
+                                    alt="profile_picture"
+                                    className="profilePic small"
+                                />
+                                <span>{request.username}</span>
+                                <button
+                                    type="button"
+                                    className="btn_act"
+                                    onClick={() => respondToFriendRequest(request._id, 'accept')}
+                                >
+                                    Accept
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn_act"
+                                    onClick={() => respondToFriendRequest(request._id, 'decline')}
+                                >
+                                    Decline
+                                </button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <div className='personalSummary'>
                     <h3 className='section'>Personal Collection</h3>

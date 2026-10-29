@@ -4,6 +4,7 @@ import '../styling/textStyle.css';
 import '../styling/home.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Post from "./post.jsx";
+import { API_BASE, readResponse } from '../api.js';
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -22,13 +23,8 @@ export default class Home extends React.Component {
 
     fetchAllPosts = async () => {
         try {
-            const res = await fetch('http://localhost:5000/api/posts');
-            const data = await res.json();
-
-            if (!res.ok) {
-                this.setState({ error: data.message || "Failed to load posts", loading: false });
-                return;
-            }
+            const res = await fetch(`${API_BASE}/posts`);
+            const data = await readResponse(res);
 
             this.setState({ posts: data, loading: false });
         } catch (err) {

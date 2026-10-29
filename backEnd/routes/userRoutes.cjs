@@ -132,7 +132,7 @@ router.post('/:id/posts', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate('post_ids');
+    const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
     const posts = await Post.find({ email: user.email }).sort({ createdAt: -1 });
     const userData = user.toObject();

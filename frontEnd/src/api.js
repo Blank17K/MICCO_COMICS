@@ -1,8 +1,9 @@
 export const API_BASE = '/api';
+const MEDIA_ORIGIN = import.meta.env.VITE_MEDIA_ORIGIN || window.location.origin;
 
 export function mediaUrl(path) {
     if (!path) return '';
-    return path.startsWith('http') ? path : `${window.location.origin}${path}`;
+    return path.startsWith('http') ? path : `${MEDIA_ORIGIN}${path}`;
 }
 
 export async function readResponse(response) {

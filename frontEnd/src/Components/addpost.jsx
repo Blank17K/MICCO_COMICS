@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import '../styling/addPost.css';
+import { API_BASE, readResponse } from '../api.js';
 
 export default function AddPost(props) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [image, setImage] = useState(null);
 
     const handleSubmit = async () => {
         const t = title.trim();
@@ -26,27 +28,22 @@ export default function AddPost(props) {
         setLoading(true);
 
         try {
-            const res = await fetch('http://localhost:5000/api/posts', {
+            const formData = new FormData();
+            formData.append('email', user.email);
+            formData.append('post_title', t);
+            formData.append('post_description', d);
+            if (image) formData.append('image', image);
+
+            const res = await fetch(`${API_BASE}/posts`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: user.email,
-                    post_title: t,
-                    post_description: d
-                })
+                body: formData
             });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                setError(data.message || 'Failed to create post');
-                setLoading(false);
-                return;
-            }
+            const data = await readResponse(res);
 
             setLoading(false);
             setTitle('');
             setDescription('');
+            setImage(null);
             if (props.closeP) props.closeP();
             if (props.onPosted) props.onPosted(data.post);
         } catch (err) {
@@ -81,7 +78,13 @@ export default function AddPost(props) {
                     ></textarea>
 
                     <div className="input-group">
-                        <input type="file" className="form-control" id="inputGroupFile02" />
+                        <input
+                            type="file"
+                            className="form-control"
+                            id="inputGroupFile02"
+                            accept="image/*"
+                            onChange={(e) => setImage(e.target.files?.[0] || null)}
+                        />
                         <label className="input-group-text" htmlFor="inputGroupFile02">Upload</label>
                     </div>
 
