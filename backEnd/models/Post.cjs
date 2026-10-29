@@ -10,7 +10,9 @@ const postSchema = new mongoose.Schema({
   email:            { type: String, required: true },
   post_title:       { type: String, required: true },
   post_description: { type: String, required: true },
-  imgPath:          { type: String, default: '' },          // empty for now
+  imgPath:          { type: String, default: '' },          // legacy first-image path
+  imgPaths:         { type: [String], default: [] },
+  isAlbum:          { type: Boolean, default: false },
   likes:            { type: Number, default: 0 },
   likedBy:          [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   reports:          { type: Number, default: 0 },

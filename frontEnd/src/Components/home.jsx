@@ -59,7 +59,9 @@ export default class Home extends React.Component {
                 id: post.post_id,
                 title: post.post_title,
                 content: post.post_description,
-                isAlbum: post.imgPath === '',
+                isAlbum: post.isAlbum ?? (post.imgPaths?.length > 1),
+                imgPath: post.imgPath,
+                imgPaths: post.imgPaths,
                 likes: post.likes,
                 comments: post.comments.length
             };

@@ -5,6 +5,7 @@ import '../styling/textStyle.css';
 import '../styling/post.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import placeholder from './imgs/placeholder.svg';
+import { mediaUrl } from '../api.js';
 
 export default class Post extends React.Component {
     constructor(props){
@@ -13,11 +14,16 @@ export default class Post extends React.Component {
     
     render(){
         const data = this.props.data;
+        const imagePath = data.imgPaths?.[0] || data.imgPath;
         //const album = data.isAlbum?"":"album";
         return(
             <>
                 {data.isAlbum == true?<><div className="album_1"></div><div className="album_2"></div></>:""}
-                <img src={placeholder} className="card-img-top" alt="..."/>
+                <img
+                    src={imagePath ? mediaUrl(imagePath) : placeholder}
+                    className="card-img-top"
+                    alt={data.title}
+                />
                 <div className="card-body">
                     <h5 className="card-title">{data.title}</h5>
                     <p className="card-text">{data.content}</p>

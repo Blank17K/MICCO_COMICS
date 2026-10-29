@@ -4,6 +4,7 @@ import Ppic from './imgs/PP.svg'
 import '../styling/profile.css'
 import Post from './post'
 import { API_BASE, mediaUrl, readResponse } from '../api.js'
+import { io } from 'socket.io-client'
 
 const comicPosts = [
     { id: 1, title: "The Invisible Man's Wardrobe Malfunction", content: "...", isAlbum: true,  likes: 10, comments: 30 },
@@ -20,6 +21,8 @@ export default function Profile() {
     const [profileImage, setProfileImage] = useState(null)
     const [friendRequests, setFriendRequests] = useState([])
     const [friendRequestError, setFriendRequestError] = useState("")
+    const [friends, setFriends] = useState([])
+    const [onlineUsers, setOnlineUsers] = useState([])
 
     // ---- refs (mirrors this.editUsername, this.editBio, ...) ----
     const editUsername   = useRef(null)
@@ -41,6 +44,7 @@ export default function Profile() {
                 const res = await fetch(`${API_BASE}/users/${userId}/friends`)
                 const data = await readResponse(res)
                 setFriendRequests(data.friendRequests || [])
+                setFriends(data.friends || [])
                 setFriendRequestError("")
             } catch (err) {
                 setFriendRequestError(err.message || "Could not load friend requests")
@@ -48,6 +52,17 @@ export default function Profile() {
         }
 
         fetchFriendRequests()
+    }, [user])
+
+    useEffect(() => {
+        const userId = user?._id || user?.id
+        if (!userId) return
+
+        const socket = io()
+        socket.emit('join-user', userId)
+        socket.on('online-users', setOnlineUsers)
+
+        return () => socket.disconnect()
     }, [user])
 
     const respondToFriendRequest = async (requesterId, action) => {
@@ -241,10 +256,20 @@ export default function Profile() {
                     </div>
                     <h3 className='section mt-4'>Active Friends</h3>
                     <div className='activeFriends'>
-                        <img alt="profile_picture" src={Ppic} className="profilePic small"/>
-                        <img alt="profile_picture" src={Ppic} className="profilePic small"/>
-                        <img alt="profile_picture" src={Ppic} className="profilePic small"/>
-                        <img alt="profile_picture" src={Ppic} className="profilePic small"/>
+                        {friends.length === 0 && <p>No friends yet.</p>}
+                        {friends.map(friend => {
+                            const isOnline = onlineUsers.includes(friend._id)
+                            return (
+                                <div key={friend._id} className="activeFriend">
+                                    <img
+                                        alt="profile_picture"
+                                        src={mediaUrl(friend.profilePic) || Ppic}
+                                        className={`profilePic small ${isOnline ? 'friendOnline' : 'friendOffline'}`}
+                                    />
+                                    <span>{friend.username}</span>
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
             </div>

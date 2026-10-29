@@ -44,21 +44,27 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', upload.single('image'), async (req, res) => {
+router.post('/', upload.array('images', 10), async (req, res) => {
   try {
     const { email, post_title, post_description } = req.body;
     if (!email || !post_title || !post_description) {
       return res.status(400).json({ message: 'email, post_title and post_description are required' });
     }
+    if (!req.files?.length) {
+      return res.status(400).json({ message: 'At least one image is required' });
+    }
 
     const last = await Post.findOne().sort({ post_id: -1 });
     const nextId = last ? last.post_id + 1 : 1;
+    const imgPaths = req.files.map(file => `/uploads/posts/${file.filename}`);
     const post = await Post.create({
       post_id: nextId,
       email,
       post_title,
       post_description,
-      imgPath: req.file ? `/uploads/posts/${req.file.filename}` : '',
+      imgPath: imgPaths[0],
+      imgPaths,
+      isAlbum: imgPaths.length > 1,
       likes: 0,
       comments: []
     });

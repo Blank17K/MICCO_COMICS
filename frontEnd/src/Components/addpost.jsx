@@ -7,7 +7,7 @@ export default function AddPost(props) {
     const [description, setDescription] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [image, setImage] = useState(null);
+    const [images, setImages] = useState([]);
 
     const handleSubmit = async () => {
         const t = title.trim();
@@ -15,6 +15,10 @@ export default function AddPost(props) {
 
         if (!t || !d) {
             setError('Please fill in both title and description.');
+            return;
+        }
+        if (!images.length) {
+            setError('Please upload at least one image.');
             return;
         }
 
@@ -32,7 +36,7 @@ export default function AddPost(props) {
             formData.append('email', user.email);
             formData.append('post_title', t);
             formData.append('post_description', d);
-            if (image) formData.append('image', image);
+            images.forEach(image => formData.append('images', image));
 
             const res = await fetch(`${API_BASE}/posts`, {
                 method: 'POST',
@@ -43,11 +47,11 @@ export default function AddPost(props) {
             setLoading(false);
             setTitle('');
             setDescription('');
-            setImage(null);
+            setImages([]);
             if (props.closeP) props.closeP();
             if (props.onPosted) props.onPosted(data.post);
         } catch (err) {
-            setError('Could not reach server');
+            setError(err.message || 'Could not reach server');
             setLoading(false);
         }
     };
@@ -83,7 +87,9 @@ export default function AddPost(props) {
                             className="form-control"
                             id="inputGroupFile02"
                             accept="image/*"
-                            onChange={(e) => setImage(e.target.files?.[0] || null)}
+                            multiple
+                            required
+                            onChange={(e) => setImages(Array.from(e.target.files || []))}
                         />
                         <label className="input-group-text" htmlFor="inputGroupFile02">Upload</label>
                     </div>

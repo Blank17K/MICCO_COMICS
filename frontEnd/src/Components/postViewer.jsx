@@ -12,6 +12,7 @@ function PostViewer() {
     const [error, setError] = useState("");
     const [friendRequestMessage, setFriendRequestMessage] = useState("");
     const [commentText, setCommentText] = useState("");
+    const [activeImage, setActiveImage] = useState(0);
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -20,6 +21,7 @@ function PostViewer() {
                 const data = await readResponse(res);
 
                 setPost(data);
+                setActiveImage(0);
                 setLoading(false);
             } catch (err) {
                 setError("Could not reach server");
@@ -108,6 +110,10 @@ function PostViewer() {
     if (loading) return <p className="text-center">Loading post...</p>;
     if (error) return <p className="text-center text-danger">{error}</p>;
     if (!post) return null;
+    const imagePaths = post.imgPaths?.length
+        ? post.imgPaths
+        : (post.imgPath ? [post.imgPath] : []);
+    const currentImage = imagePaths[activeImage] || null;
 
     return (
         <div className="section postViewer">
@@ -120,9 +126,28 @@ function PostViewer() {
                 <div className="imgCapcell">
                     <img
                         className="imgCap"
-                        src={post.imgPath ? mediaUrl(post.imgPath) : imgHolder}
+                        src={currentImage ? mediaUrl(currentImage) : imgHolder}
                         alt={post.post_title}
                     />
+                    {imagePaths.length > 1 && (
+                        <div className="d-flex justify-content-between align-items-center mt-2">
+                            <button
+                                type="button"
+                                className="btn_act"
+                                onClick={() => setActiveImage((activeImage - 1 + imagePaths.length) % imagePaths.length)}
+                            >
+                                Previous
+                            </button>
+                            <span>{activeImage + 1} / {imagePaths.length}</span>
+                            <button
+                                type="button"
+                                className="btn_act"
+                                onClick={() => setActiveImage((activeImage + 1) % imagePaths.length)}
+                            >
+                                Next
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 <div className="imgInfo">
