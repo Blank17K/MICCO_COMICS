@@ -27,7 +27,7 @@ export default class Header extends React.Component {
             return <Navigate to="/" replace={true} />;
         }
         return(
-            <div className="header section appHeader">
+            <div className="header appHeader">
                 {/*<img src={headerBar} alt="header" className="background"/>*/}
                 <h1 className="title appTitle">MICCO</h1>
                 <button className="btn_act" onClick={()=>{

@@ -1,0 +1,134 @@
+/* ==========================================================
+   MICCO comic theme - everything inside the app shell.
+   Palette: --baseColor (red) / --secBColor (navy) /
+            --thrdBColor (yellow) / --fourthBColor (white)
+   plus --ink (black) for outlines only.
+   Splash page + forms (.backDrop) are intentionally untouched.
+   ========================================================== */
+
+/* Halftone page background. Set on <body> (not .appShell) so the
+   stacked "album" sheets (z-index:-1) still paint above it. */
+body:has(.appShell){
+    background-color: var(--fourthBColor);
+    background-image: radial-gradient(rgba(27,41,78,.18) 1.6px, transparent 1.8px);
+    background-size: 14px 14px;
+}
+
+.appShell{
+    font-family: var(--pharagraphs);
+    color: var(--secBColor);
+}
+/* keep the modals looking exactly as they did */
+.backDrop{
+    font-family: var(--bs-body-font-family);
+    color: var(--bs-body-color);
+}
+
+/* Scrollbars */
+.appMain, .appNav{
+    scrollbar-color: var(--baseColor) var(--secBColor);
+    scrollbar-width: thin;
+}
+.appMain::-webkit-scrollbar{ width: 14px; }
+.appMain::-webkit-scrollbar-track{ background: var(--secBColor); border-left: 3px solid var(--ink); }
+.appMain::-webkit-scrollbar-thumb{ background: var(--baseColor); border: 3px solid var(--ink); }
+
+/* ---------- reusable pieces ---------- */
+
+/* White inked panel with a hard shadow */
+.panel{
+    background: var(--fourthBColor);
+    border: 5px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--ink);
+    padding: 1rem 1.25rem 1.25rem;
+    min-width: 0;
+}
+
+/* Yellow label like a comic caption box */
+.captionBox{
+    display: inline-block;
+    margin: 0 0 1rem;
+    padding: .1rem 1rem;
+    background: var(--thrdBColor);
+    color: var(--secBColor);
+    border: 4px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--baseColor);
+    font-family: var(--titles);
+    font-size: 1.75rem;
+    font-weight: 400;
+    letter-spacing: .05em;
+    line-height: 1.3;
+    transform: rotate(-1.5deg);
+}
+.captionBox.small{ font-size: 1.25rem; }
+
+/* Italic hand-lettered "nothing here" notes */
+.emptyNote{
+    font-family: var(--subtitles);
+    color: var(--secBColor);
+    margin: .5rem 0;
+}
+
+/* Speech bubble (tail points left on desktop, up on phones) */
+.speechBubble{
+    position: relative;
+    background: var(--fourthBColor);
+    border: 5px solid var(--ink);
+    border-radius: 2rem;
+    padding: 1.25rem 1.5rem;
+}
+.speechBubble::before,
+.speechBubble::after{
+    content: "";
+    position: absolute;
+    top: 2.25rem;
+    border-style: solid;
+    border-color: transparent;
+}
+.speechBubble::before{
+    left: -2.1rem;
+    border-width: .9rem 2rem .9rem 0;
+    border-right-color: var(--ink);
+}
+.speechBubble::after{
+    left: -1.45rem;
+    top: calc(2.25rem + 5px);
+    border-width: calc(.9rem - 5px) calc(2rem - 7px) calc(.9rem - 5px) 0;
+    border-right-color: var(--fourthBColor);
+}
+@media (max-width: 575.98px){
+    .speechBubble::before{
+        left: 2rem; top: -2.1rem;
+        border-width: 0 .9rem 2rem .9rem;
+        border-color: transparent transparent var(--ink) transparent;
+    }
+    .speechBubble::after{
+        left: calc(2rem + 5px); top: -1.45rem;
+        border-width: 0 calc(.9rem - 5px) calc(2rem - 7px) calc(.9rem - 5px);
+        border-color: transparent transparent var(--fourthBColor) transparent;
+    }
+}
+
+/* Square icon button (back / report) */
+.icon_btn{
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.4rem;
+    cursor: pointer;
+    background: var(--thrdBColor);
+    color: var(--secBColor);
+    border: 4px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--baseColor);
+    transition: transform .08s, box-shadow .08s, background .08s;
+}
+.icon_btn i{ background: none; padding: 0; border-radius: 0; color: inherit; }
+.icon_btn:hover{
+    background: var(--baseColor);
+    color: var(--fourthBColor);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--thrdBColor);
+}

@@ -81,7 +81,7 @@ export default class Home extends React.Component {
 
         return (
             <div className="homeSection">
-                <div className="section searchBar">
+                <div className="searchBar">
                     <input
                         type="text"
                         className="searchInput"

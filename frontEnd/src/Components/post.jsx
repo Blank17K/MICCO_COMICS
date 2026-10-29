@@ -19,16 +19,12 @@ export default class Post extends React.Component {
         return(
             <>
                 {data.isAlbum == true?<><div className="album_1"></div><div className="album_2"></div></>:""}
-                <img
-                    src={imagePath ? mediaUrl(imagePath) : placeholder}
-                    className="card-img-top"
-                    alt={data.title}
-                />
+                <img src={imagePath ? mediaUrl(imagePath) : placeholder} className="card-img-top" alt={data.title}/>
                 <div className="card-body">
                     <h5 className="card-title">{data.title}</h5>
                     <p className="card-text">{data.content}</p>
                 </div>
-                <div className="card-footer text-muted postFooter">
+                <div className="card-footer postFooter">
                     <span className="likeWrap"><i className="lni lni-heart likes"></i><span className="likeP">{data.likes}</span></span>
                     <i className="lni lni-megaphone-1 report"></i>
                 </div>

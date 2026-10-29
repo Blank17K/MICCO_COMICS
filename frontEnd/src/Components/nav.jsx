@@ -13,7 +13,7 @@ export default function Nav() {
   const { pathname } = useLocation();
 
   return (
-    <nav className="section appNav">
+    <nav className="appNav">
       {LINKS.map(({ key, label, path }) => (
         <button
           key={key}

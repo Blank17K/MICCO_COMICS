@@ -1,9 +1,9 @@
-require('dotenv').config();   // must be the FIRST line
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const http = require('http');
-const path = require('path');
 const { Server } = require('socket.io');
 const userRoutes = require('./routes/userRoutes.cjs');
 const postRoutes = require('./routes/postRoutes.cjs');

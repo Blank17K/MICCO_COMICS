@@ -11,9 +11,7 @@
     --secBColor:#1B294E;
     --thrdBColor:#FFD21D;
     --fourthBColor:#fff;
-    --ink:#363636;
-    --mute:#5a5a5a;
-    --panel:#e1e1e1;
+    --ink:#000; /* comic outlines only */
 }
 html, body, #root{
     min-height: 100%;
@@ -101,11 +99,12 @@ input[type="file"]{
     pointer-events: none;
 }
 
-/* Grey bordered panel used for header / nav / headings / bars */
+/* Generic comic panel */
 .section{
-    border: solid 5px black;
+    border: solid 5px var(--ink);
     margin: 0;
-    background-color: grey;
+    background-color: var(--fourthBColor);
+    box-shadow: 6px 6px 0 var(--ink);
     padding: 1rem;
 }
 .active{

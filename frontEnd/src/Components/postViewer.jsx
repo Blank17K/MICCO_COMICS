@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import imgHolder from "./imgs/placeholder.svg";
 import '../styling/postViewer.css';
 import { API_BASE, mediaUrl, readResponse } from '../api.js';
 
 function PostViewer() {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-    const [friendRequestMessage, setFriendRequestMessage] = useState("");
     const [commentText, setCommentText] = useState("");
     const [activeImage, setActiveImage] = useState(0);
+    const [friendRequestMessage, setFriendRequestMessage] = useState("");
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -63,7 +64,6 @@ function PostViewer() {
             setError("Please log in to like a post");
             return;
         }
-
         try {
             const res = await fetch(`${API_BASE}/posts/${id}/like`, {
                 method: 'POST',
@@ -93,7 +93,6 @@ function PostViewer() {
             setFriendRequestMessage("Please log in to send a friend request");
             return;
         }
-
         try {
             const res = await fetch(`${API_BASE}/posts/${id}/friend-request`, {
                 method: 'POST',
@@ -110,16 +109,23 @@ function PostViewer() {
     if (loading) return <p className="text-center">Loading post...</p>;
     if (error) return <p className="text-center text-danger">{error}</p>;
     if (!post) return null;
-    const imagePaths = post.imgPaths?.length
-        ? post.imgPaths
-        : (post.imgPath ? [post.imgPath] : []);
+    const imagePaths = post.imgPaths?.length ? post.imgPaths : (post.imgPath ? [post.imgPath] : []);
     const currentImage = imagePaths[activeImage] || null;
 
     return (
-        <div className="section postViewer">
-            <div className="input-group viewerSearch">
-                <input type="text" className="form-control" placeholder="Search" />
-                <span className="input-group-text"><i className="lni lni-search-2"></i></span>
+        <div className="postViewer">
+            <div className="viewerBar">
+                <div
+                    className="icon_btn"
+                    title="Back"
+                    onClick={() => navigate(-1)}
+                >
+                    <i className="lni lni-arrow-left"></i>
+                </div>
+                <div className="input-group viewerSearch">
+                    <input type="text" className="form-control" placeholder="Search" />
+                    <span className="input-group-text"><i className="lni lni-search-2"></i></span>
+                </div>
             </div>
 
             <div className="viewerGrid">
@@ -131,44 +137,41 @@ function PostViewer() {
                     />
                     {imagePaths.length > 1 && (
                         <div className="d-flex justify-content-between align-items-center mt-2">
-                            <button
-                                type="button"
-                                className="btn_act"
-                                onClick={() => setActiveImage((activeImage - 1 + imagePaths.length) % imagePaths.length)}
-                            >
-                                Previous
-                            </button>
+                            <button type="button" className="btn_act" onClick={() => setActiveImage((activeImage - 1 + imagePaths.length) % imagePaths.length)}>Previous</button>
                             <span>{activeImage + 1} / {imagePaths.length}</span>
-                            <button
-                                type="button"
-                                className="btn_act"
-                                onClick={() => setActiveImage((activeImage + 1) % imagePaths.length)}
-                            >
-                                Next
-                            </button>
+                            <button type="button" className="btn_act" onClick={() => setActiveImage((activeImage + 1) % imagePaths.length)}>Next</button>
                         </div>
                     )}
                 </div>
 
                 <div className="imgInfo">
-                    <h3 className="title">{post.post_title}</h3>
+                    <h3 className="title postTitle">{post.post_title}</h3>
                     <p className="ImgDescrip">{post.post_description}</p>
 
-                    <p className="likeComments">
-                        <span className="lik" onClick={toggleLike}><i className="lni lni-heart"></i> {post.likes}</span>
-                        <span className="com"><i className="lni lni-comment-1"></i> {post.comments.length}</span>
-                    </p>
+                    <div className="likeComments">
+                        <span className="statPill lik" onClick={toggleLike}><i className="lni lni-heart"></i> {post.likes}</span>
+                        <span className="statPill com"><i className="lni lni-comment-1"></i> {post.comments.length}</span>
+                        <div className="icon_btn reoprt" title="Report" onClick={reportPost}>
+                            <i className="lni lni-megaphone-1"></i>
+                        </div>
+                        <div className="icon_btn AskToBeFriend" title="Ask to be friends" onClick={askToBeFriend}>
+                            <i className="lni lni-user-multiple-4"></i>
+                        </div>
+                        {friendRequestMessage && <p className="text-center">{friendRequestMessage}</p>}
+                    </div>
 
                     <div className="commentBox">
                         <div className="comments">
+                            {post.comments.length === 0 && <p className="emptyNote">No comments yet. Be the first to say something!</p>}
                             {post.comments.map((c, i) => (
                                 <div key={i} className="comment">
-                                    <strong>{c.username}</strong>: {c.commet}
+                                    <strong>{c.username}</strong>
+                                    <span>{c.commet}</span>
                                 </div>
                             ))}
                         </div>
 
-                        <div className="input-group">
+                        <div className="input-group commentBar">
                             <input
                                 type="text"
                                 className="form-control"
@@ -187,22 +190,8 @@ function PostViewer() {
                     </div>
                 </div>
             </div>
-
-            <div className="postFoot">
-                <div
-                    className="icon_btn AskToBeFriend"
-                    style={{ cursor: "pointer" }}
-                    onClick={askToBeFriend}
-                >
-                    <i class="lni lni-user-multiple-4"></i>
-                </div>
-                <div className="icon_btn report" onClick={reportPost}>
-                    <i className="lni lni-megaphone-1"></i>
-                </div>
-            </div>
-            {friendRequestMessage && <p className="text-center">{friendRequestMessage}</p>}
         </div>
     );
 }
 
-export default PostViewer;
+export default PostViewer;

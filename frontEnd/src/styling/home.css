@@ -4,25 +4,63 @@
     gap: 1rem;
     min-width: 0;
 }
+
+/* Red search strip */
 .searchBar{
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: .75rem 1rem;
+    padding: .75rem 1.25rem;
+    background: var(--baseColor);
+    border: 5px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--ink);
 }
 .searchInput{
     flex: 1 1 auto;
+    font-family: var(--messages);
+    color: var(--secBColor);
 }
+.searchBar .btn_act{
+    border: 4px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--secBColor);
+}
+.searchBar .btn_act:hover{
+    background: var(--secBColor);
+    box-shadow: 4px 4px 0 var(--thrdBColor);
+}
+
+/* Comic-page grid of cards */
 .postings{
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-    gap: 2.25rem 2rem;
-    padding: 1rem 1.75rem 1.75rem 1.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+    gap: 2.5rem 2.25rem;
+    padding: 1.5rem 1.75rem 2rem 1.75rem;
 }
-.emptyMsg, .homeSection > p{
+
+/* status messages ("Loading...", errors, empty) */
+.homeSection > p,
+.emptyMsg{
+    align-self: center;
     margin: 1rem 0;
+    padding: .4rem 1.25rem;
+    font-family: var(--titles);
+    font-size: 1.6rem;
+    letter-spacing: .05em;
+    color: var(--secBColor);
+    background: var(--thrdBColor);
+    border: 4px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--baseColor);
 }
+.homeSection > p.text-danger{
+    position: static;
+    color: var(--fourthBColor) !important;
+    background: var(--baseColor);
+    box-shadow: 4px 4px 0 var(--ink);
+}
+.emptyMsg{ grid-column: 1 / -1; justify-self: center; }
+
 @media (max-width: 575.98px){
-    .postings{ grid-template-columns: minmax(0, 1fr); }
-    .searchBar .btn_act{ font-size: 1.1rem; padding: .25rem 1rem; }
+    .postings{ grid-template-columns: minmax(0, 1fr); padding-top: 1rem; }
+    .searchBar{ padding: .6rem .75rem; gap: .6rem; }
+    .searchBar .btn_act{ font-size: 1.1rem; padding: .2rem .9rem; }
 }

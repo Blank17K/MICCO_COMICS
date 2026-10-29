@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import Ppic from './imgs/PP.svg'
 import '../styling/profile.css'
 import Post from './post'
-import { API_BASE, mediaUrl, readResponse } from '../api.js'
 import { io } from 'socket.io-client'
+import { API_BASE, mediaUrl, readResponse } from '../api.js'
 
 const comicPosts = [
     { id: 1, title: "The Invisible Man's Wardrobe Malfunction", content: "...", isAlbum: true,  likes: 10, comments: 30 },
@@ -20,9 +20,9 @@ export default function Profile() {
     const [editLoading, setEditLoading] = useState(false)
     const [profileImage, setProfileImage] = useState(null)
     const [friendRequests, setFriendRequests] = useState([])
-    const [friendRequestError, setFriendRequestError] = useState("")
     const [friends, setFriends] = useState([])
     const [onlineUsers, setOnlineUsers] = useState([])
+    const [friendRequestError, setFriendRequestError] = useState("")
 
     // ---- refs (mirrors this.editUsername, this.editBio, ...) ----
     const editUsername   = useRef(null)
@@ -38,41 +38,40 @@ export default function Profile() {
     useEffect(() => {
         const userId = user?._id || user?.id
         if (!userId) return
-
-        const fetchFriendRequests = async () => {
+        const loadFriends = async () => {
             try {
                 const res = await fetch(`${API_BASE}/users/${userId}/friends`)
                 const data = await readResponse(res)
-                setFriendRequests(data.friendRequests || [])
                 setFriends(data.friends || [])
+                setFriendRequests(data.friendRequests || [])
                 setFriendRequestError("")
             } catch (err) {
-                setFriendRequestError(err.message || "Could not load friend requests")
+                setFriendRequestError(err.message || "Could not load friends")
             }
         }
-
-        fetchFriendRequests()
+        loadFriends()
     }, [user])
 
     useEffect(() => {
         const userId = user?._id || user?.id
         if (!userId) return
-
         const socket = io()
         socket.emit('join-user', userId)
         socket.on('online-users', setOnlineUsers)
-
         return () => socket.disconnect()
     }, [user])
 
     const respondToFriendRequest = async (requesterId, action) => {
         const userId = user?._id || user?.id
         try {
-            const res = await fetch(`${API_BASE}/users/${userId}/friend-requests/${requesterId}/${action}`, {
-                method: 'POST'
-            })
+            const res = await fetch(`${API_BASE}/users/${userId}/friend-requests/${requesterId}/${action}`, { method: 'POST' })
             await readResponse(res)
             setFriendRequests(current => current.filter(request => request._id !== requesterId))
+            if (action === 'accept') {
+                const friendsRes = await fetch(`${API_BASE}/users/${userId}/friends`)
+                const data = await readResponse(friendsRes)
+                setFriends(data.friends || [])
+            }
         } catch (err) {
             setFriendRequestError(err.message || "Could not update friend request")
         }
@@ -162,16 +161,12 @@ export default function Profile() {
 
                     <input type="text"     placeholder="New Username (optional)"     className="mb-3" ref={editUsername} />
                     <input type="text"     placeholder="Bio (optional)"              className="mb-3" ref={editBio} />
-                    <div className="input-group mb-3">
-                        <input
-                            type="file"
-                            className="form-control"
-                            id="profilePicFile"
-                            accept="image/*"
-                            onChange={(e) => setProfileImage(e.target.files?.[0] || null)}
-                        />
-                        <label className="input-group-text" htmlFor="profilePicFile">Upload</label>
-                    </div>
+                    <input
+                        type="file"
+                        className="form-control mb-3"
+                        accept="image/*"
+                        onChange={(e) => setProfileImage(e.target.files?.[0] || null)}
+                    />
                     <input type="password" placeholder="New Password (optional)"     className="mb-3" ref={editPassword} />
 
                     <button className="btn_act mb-3 userAct" onClick={handleEditProfile} disabled={editLoading}>
@@ -205,71 +200,60 @@ export default function Profile() {
                         src={mediaUrl(user?.profilePic) || Ppic}
                         className="profilePic"
                     />
-                    <h2>User Name: {user?.username || "Guest"}</h2>
+                    <h2 className="profileName">User Name: {user?.username || "Guest"}</h2>
                 </div>
-                <div className="section bioUser">
+                <div className="speechBubble bioUser">
                     <p className="bio">{user?.bio || ""}</p>
-                    <span className='editP' onClick={() => setEditOpen(true)}>
+                    <span className='editP' title="Edit profile" onClick={() => setEditOpen(true)}>
                         <i className="lni lni-pen-to-square"></i>
                     </span>
                 </div>
             </div>
 
             <div className='profileBody'>
-                <div className='section friendReqBox'>
-                    <h4>Friend Request:</h4>
-                    <div className='friendReq'>
-                        {friendRequestError && <p className="text-danger">{friendRequestError}</p>}
-                        {!friendRequestError && friendRequests.length === 0 && <p>No active requests.</p>}
-                        {friendRequests.map(request => (
-                            <div key={request._id} className="friendItem">
-                                <img
-                                    src={mediaUrl(request.profilePic) || Ppic}
-                                    alt="profile_picture"
-                                    className="profilePic small"
-                                />
-                                <span>{request.username}</span>
-                                <button
-                                    type="button"
-                                    className="btn_act"
-                                    onClick={() => respondToFriendRequest(request._id, 'accept')}
-                                >
-                                    Accept
-                                </button>
-                                <button
-                                    type="button"
-                                    className="btn_act"
-                                    onClick={() => respondToFriendRequest(request._id, 'decline')}
-                                >
-                                    Decline
-                                </button>
-                            </div>
-                        ))}
+                <aside className='profileSide'>
+                    <div className='panel friendReqBox'>
+                        <h4 className='captionBox small'>Friend Request:</h4>
+                        <div className='friendReq'>
+                            {friendRequestError && <p className="text-danger">{friendRequestError}</p>}
+                            {!friendRequestError && friendRequests.length === 0 && <p>No active requests.</p>}
+                            {friendRequests.map(request => (
+                                <div key={request._id} className="friendItem">
+                                    <img src={mediaUrl(request.profilePic) || Ppic} alt="profile_picture" className="profilePic small" />
+                                    <span>{request.username}</span>
+                                    <button type="button" className="btn_act" onClick={() => respondToFriendRequest(request._id, 'accept')}>Accept</button>
+                                    <button type="button" className="btn_act" onClick={() => respondToFriendRequest(request._id, 'decline')}>Decline</button>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
-                <div className='personalSummary'>
-                    <h3 className='section'>Personal Collection</h3>
-                    <div className='courcell'>
-                        <div className={`card ${comicPosts[1].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[1].id}`}><Post data={comicPosts[1]}/></Link></div>
-                        <div className={`card ${comicPosts[2].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[2].id}`}><Post data={comicPosts[2]}/></Link></div>
-                        <div className={`card ${comicPosts[0].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[0].id}`}><Post data={comicPosts[0]}/></Link></div>
-                    </div>
-                    <h3 className='section mt-4'>Active Friends</h3>
-                    <div className='activeFriends'>
-                        {friends.length === 0 && <p>No friends yet.</p>}
-                        {friends.map(friend => {
-                            const isOnline = onlineUsers.includes(friend._id)
-                            return (
+                    <div className='panel'>
+                        <h4 className='captionBox small'>Active Friends</h4>
+                        <div className='activeFriends'>
+                            {friends.length === 0 && <p>No friends yet.</p>}
+                            {friends.map(friend => (
                                 <div key={friend._id} className="activeFriend">
                                     <img
                                         alt="profile_picture"
                                         src={mediaUrl(friend.profilePic) || Ppic}
-                                        className={`profilePic small ${isOnline ? 'friendOnline' : 'friendOffline'}`}
+                                        className="profilePic small"
+                                        style={{
+                                            outline: `3px solid ${onlineUsers.includes(String(friend._id)) ? '#198754' : '#dc3545'}`,
+                                            outlineOffset: '2px'
+                                        }}
                                     />
                                     <span>{friend.username}</span>
                                 </div>
-                            )
-                        })}
+                            ))}
+                        </div>
+                    </div>
+                </aside>
+                <div className='personalSummary'>
+                    <h3 className='captionBox'>Personal Collection</h3>
+                    <div className='courcell'>
+                        <div className={`card ${comicPosts[1].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[1].id}`}><Post data={comicPosts[1]}/></Link></div>
+                        <div className={`card ${comicPosts[2].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[2].id}`}><Post data={comicPosts[2]}/></Link></div>
+                        <div className={`card ${comicPosts[0].isAlbum ? 'album' : ''} postCards`}><Link to={`/posts/${comicPosts[0].id}`}><Post data={comicPosts[0]}/></Link></div>
                     </div>
                 </div>
             </div>
