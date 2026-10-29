@@ -7,6 +7,7 @@ import Home from "./src/Components/home.jsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PostViewer from "./src/Components/postViewer.jsx";
 import Profile from "./src/Components/profile.jsx";
+import Community from "./src/Components/community.jsx";
 function APP(){
     return(
         <BrowserRouter>
@@ -35,6 +36,14 @@ function APP(){
                         <Header/>
                         <Nav/>
                         <Profile/>
+                    </div>
+                }    
+                />
+                <Route path="/community" element={
+                    <div className="row eleentBox"> 
+                        <Header/>
+                        <Nav/>
+                        <Community/>
                     </div>
                 }    
                 />

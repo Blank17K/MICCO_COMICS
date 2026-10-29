@@ -13,16 +13,17 @@
   "license": "ISC",
   "author": "Boikanyo_Tshwale",
   "type": "module",
-  "main": "server.js",
+  "main": "server.cjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "node backEnd/server.js"
+    "start": "node backEnd/server.cjs"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
+    "cors": "^2.8.6",
     "dotenv": "^18.0.5",
     "express": "^5.2.1",
     "mongoose": "^9.10.3",
